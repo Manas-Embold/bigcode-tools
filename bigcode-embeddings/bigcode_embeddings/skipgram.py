@@ -32,9 +32,7 @@ class DataReader:
         self.lines = itertools.chain(*[io.BytesIO(data) for data in self._raw_data])
 
     def _count_inputs(self):
-        inputs_count = 0
-        for _ in self.lines:
-            inputs_count += 1
+        inputs_count = sum(1 for _ in self.lines)
         self.inputs_count = inputs_count
 
     def next_batch(self, batch_size):

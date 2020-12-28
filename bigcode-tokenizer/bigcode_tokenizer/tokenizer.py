@@ -28,9 +28,7 @@ class Tokenizer:
     def _should_skip(self, tok: RawToken) -> bool:
         if self.skip_text and tok[0] in token.Text:
             return True
-        if self.skip_comments and tok[0] in token.Comment:
-            return True
-        return False
+        return bool(self.skip_comments and tok[0] in token.Comment)
 
     def skip_tokens(self, raw_tokens: List[RawToken]) -> Tuple[List[RawToken], int]:
         skipped = 0
@@ -87,7 +85,7 @@ class JavaTokenizer(Tokenizer):
         for chars_count, operators in self.MULTI_CHARS_OPS:
             if len(raw_tokens) <= chars_count:
                 continue
-            if not all(v[0] == token.Operator for v in raw_tokens[:chars_count]):
+            if any(v[0] != token.Operator for v in raw_tokens[:chars_count]):
                 continue
             value = "".join(v[1] for v in raw_tokens[:chars_count])
             if value in operators:

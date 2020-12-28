@@ -60,7 +60,7 @@ def run_search(args):
             logging.error("failed to fetch %s: %s", url, response.text)
             break
         projects = [Project(repo) for repo in response.json()["items"]]
-        if licenses and not "all" in licenses:
+        if licenses and "all" not in licenses:
             projects = filter_projects_by_license(projects, headers, licenses)
         for project in projects:
             if len(fetched_repos) < args.max_repos:

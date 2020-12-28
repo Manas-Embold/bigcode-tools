@@ -7,9 +7,7 @@ class ProcessedFileItem:
 
     @property
     def success(self):
-        if self.min_nodes <= len(self.ast) <= self.max_nodes:
-            return True
-        return False
+        return self.min_nodes <= len(self.ast) <= self.max_nodes
 
     @property
     def reason(self):
