@@ -33,9 +33,7 @@ def parse_file(filename):
         json_node = {}
         json_tree.append(json_node)
         json_node['type'] = node_type
-        children = []
-        for item in l:
-            children.append(traverse(item))
+        children = [traverse(item) for item in l]
         if (len(children) != 0):
             json_node['children'] = children
         return pos
@@ -77,7 +75,7 @@ def parse_file(filename):
             children.append(traverse_list(node.body, 'body'))
             if node.orelse:
                 children.append(traverse_list(node.orelse, 'orelse'))
-        elif isinstance(node, ast.If) or isinstance(node, ast.While):
+        elif isinstance(node, (ast.If, ast.While)):
             children.append(traverse(node.test))
             children.append(traverse_list(node.body, 'body'))
             if node.orelse:
@@ -119,7 +117,16 @@ def parse_file(filename):
         else:
             # Default handling: iterate over children.
             for child in ast.iter_child_nodes(node):
-                if isinstance(child, ast.expr_context) or isinstance(child, ast.operator) or isinstance(child, ast.boolop) or isinstance(child, ast.unaryop) or isinstance(child, ast.cmpop):
+                if isinstance(
+                    child,
+                    (
+                        ast.expr_context,
+                        ast.operator,
+                        ast.boolop,
+                        ast.unaryop,
+                        ast.cmpop,
+                    ),
+                ):
                     # Directly include expr_context, and operators into the type instead of creating a child.
                     json_node['type'] = json_node['type'] + type(child).__name__
                 else:

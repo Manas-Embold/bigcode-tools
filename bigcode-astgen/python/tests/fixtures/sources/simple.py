@@ -1,10 +1,6 @@
 import sys
 
 n = 1
-i = 1
-
-while i <= 5:
+for i in range(1, 6):
     n *= i
-    i += 1
-
 sys.stdout.write(str(n))

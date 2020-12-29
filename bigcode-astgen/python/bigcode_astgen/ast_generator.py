@@ -61,9 +61,7 @@ class ASTGenerator:
         json_node = {"id": pos}
         self._nodes.append(json_node)
         json_node["type"] = node_type
-        children = []
-        for item in nodes_list:
-            children.append(self.traverse(item))
+        children = [self.traverse(item) for item in nodes_list]
         if children:
             json_node["children"] = children
         return pos

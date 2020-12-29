@@ -115,8 +115,7 @@ def glob1(dirname, pattern):
 def _glob2(dirname, pattern, dironly):
     assert _isrecursive(pattern)
     yield pattern[:0]
-    for v in _rlistdir(dirname, dironly):
-        yield v
+    yield from _rlistdir(dirname, dironly)
 
 # If dironly is false, yields all file names inside a directory.
 # If dironly is true, yields only directory names.
